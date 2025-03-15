@@ -84,6 +84,32 @@ app.post('/api/products', async (req, res) => {
   }
 });
 
+// 3. Delete a product
+app.delete('/api/products', async (req, res) => {
+  try {
+    const { sku, name, description, price } = req.body;
+    
+    // Validate required fields
+    if (!sku || !name || !price) {
+      return res.status(400).json({ error: 'SKU, name, and price are required' });
+    }
+    
+    const { data, error } = await supabase
+      .from('products')
+      .insert([
+        { sku, name, description, price }
+      ])
+      .select();
+    
+    if (error) throw error;
+    
+    res.status(201).json(data[0]);
+  } catch (error) {
+    console.error('Error creating product:', error);
+    res.status(500).json({ error: 'Failed to create product' });
+  }
+});
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
