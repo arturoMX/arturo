@@ -84,7 +84,7 @@ app.post('/api/products', async (req, res) => {
   }
 });
 
-// 3. Delete a products
+// 3. Delete a product
 app.delete('/api/products', async (req, res) => {
   try {
     const { sku, name, description, price } = req.body;
